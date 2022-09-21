@@ -140,6 +140,91 @@ Crie um programa para ler os dados de um funcionário (nome, sálario bruto e im
 |            __+__ NetSalary(): double            |
 | __+__ IncreaseSalary(percentagem: double): void |
 
+#### main:
+
+```java
+package empregado;
+
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Exercicio3 {
+
+    public static void main(String[] args) {
+    
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+        Employee emp = new Employee();
+
+        System.out.print("Name: ");
+        String Name = sc.nextLine();
+        
+        System.out.print("Gross salary: ");
+        double GrossSalary = sc.nextDouble();
+        
+        System.out.print("Tax: ");
+        double Tax = sc.nextDouble();
+
+        emp.setName(Name);
+        emp.setGrossSalary(GrossSalary);
+        emp.setTax(Tax);
+        
+        System.out.println();
+		System.out.println("Employee: " + emp);
+		System.out.println();
+        
+		System.out.print("Which percentage to increase salary? ");
+		double percentage = sc.nextDouble();
+		emp.increaseSalary(percentage);
+        
+		System.out.println();
+		System.out.println("Updated data: " + emp);
+		sc.close();
+        
+    }
+    
+}
+```
+#### Employee:
+
+```java
+package empregado;
+
+public class Employee {
+    
+    private String Name;
+    private double GrossSalary;
+    private double Tax;
+
+    public String setName(String Name2) {
+        this.Name = Name2;
+        return this.Name;
+    }
+
+    public double setGrossSalary(double GrossSalary2) {
+        this.GrossSalary = GrossSalary2;
+        return this.GrossSalary;
+    }
+
+    public double setTax(double Tax2) {
+        this.Tax = Tax2;
+        return this.Tax;
+    }
+
+    public double NetSalary(){
+        return this.GrossSalary - this.Tax;
+    }
+   
+    public void increaseSalary(double percentage) {
+		this.GrossSalary += (this.GrossSalary * percentage / 100.0);
+	}
+    @Override
+	public String toString() {
+		return Name + ", $ " + String.format("%.2f", NetSalary());
+	}
+    }
+```
+
 
 ### **Exercício 4:** 
 Fazer um programa para ler os dados de N figuras (N fornecido pelo usuário), e depois mostrar as áreas destas figuras na mesma ordem em que foram digitadas.
