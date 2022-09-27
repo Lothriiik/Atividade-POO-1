@@ -233,6 +233,186 @@ Obs: Shape é uma classe abstract.
     <img height="400" width="300" src="./imgs/exerc4.png">
 </div>
 
+#### main:
+
+```java
+package area;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+import area.enums.Color;
+
+
+public class main {
+    public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        List<Shape> list = new ArrayList<>();
+
+        System.out.print("Enter the number of shapes: ");
+        int n = sc.nextInt();
+
+        for (int i = 1; i <= n; i++) {
+            System.out.println("Shape #" + i + " data:");
+
+            System.out.print("Rectangle or Circle (r/c)? ");
+
+            char chart = sc.next().charAt(0);
+
+            System.out.print("Color (BLACK/BLUE/RED): ");
+            Color c1 = Color.valueOf(sc.next());
+
+            if (chart == 'r') {
+                System.out.print("Width: ");
+                double width = sc.nextDouble();
+
+                System.out.print("Height: ");
+                double height = sc.nextDouble();
+
+                list.add(new Rectangle(c1, width, height));
+
+            } else {
+                System.out.print("Radius: ");
+                double radius = sc.nextDouble();
+
+                list.add(new Circle(c1, radius));
+            }
+        }
+
+        System.out.println();
+        System.out.println("SHAPE AREAS:");
+        
+        for (Shape shape : list) {
+            System.out.println(String.format("%.2f", shape.area()));
+        }
+
+        sc.close();
+    }
+}
+```
+#### Circle:
+
+```java
+package area;
+
+import area.enums.Color;
+
+public class Circle extends Shape{
+    private Double radius;
+
+    public Circle() {
+        super();
+    }
+
+    public Circle(Color color, Double radius) {
+        super(color);
+        this.radius = radius;
+    }
+
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+```
+#### Rectangle:
+
+```java
+package area;
+
+import area.enums.Color;
+
+public class Rectangle extends Shape {
+    private Double width;
+    private Double height;
+
+    public Rectangle() {
+        super();
+}
+
+    public Rectangle(Color color, Double width, Double height) {
+
+        super(color);
+        this.width = width;
+        this.height = height;
+}
+
+    public Double getWidth() {
+        return width;
+        
+}
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getHeight() {
+        return height;
+
+
+}
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    @Override
+    public double area() {
+        return width * height;
+    }
+}
+```
+#### Shape:
+
+```java
+package area;
+
+import area.enums.Color;
+
+public abstract class Shape {
+
+    private Color color;
+
+    public Shape() {
+    }
+
+    public Shape(Color color) {
+        this.color = color;
+}
+
+    public Color getColor() {
+        return color;
+}
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public abstract double area();
+}
+```
+#### Color:
+
+```java
+package area.enums;
+
+public enum Color {
+    RED,BLACK,BLUE,;
+}
+```
+
 
 
 ### **Exercício 5:** 
@@ -243,11 +423,330 @@ Use o *SimpleDateFormat*
 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 ```
 
-
 <div>
     <img height="400" width="800" src="imgs/exerc5.png">
 </div>
 
+#### data:
+
+```java
+package produtos.principal;
+
+
+import java.util.Locale;
+import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import produtos.secundarios.Client;
+import produtos.secundarios.Order;
+import produtos.secundarios.OrderItem;
+import produtos.secundarios.Product;
+import produtos.secundarios.enums.OrderStatus;
+
+public class data {
+    public static void main(String[] args) throws ParseException {
+        
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
+		SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+
+		System.out.println("Enter client data:");
+		System.out.print("Name: ");
+		String name = sc.nextLine();
+
+		System.out.print("Email: ");
+		String email = sc.next();
+
+		System.out.print("Birth date (DD/MM/YYYY): ");
+		Date birthDate = data.parse(sc.next());
+
+		Client c1 = new Client(name, email, birthDate);
+
+		System.out.println("Enter order data:");
+		System.out.print("Status: ");
+		OrderStatus status = OrderStatus.valueOf(sc.next());
+
+		Order o1 = new Order(new Date(), status, c1);
+
+		System.out.print("How many items to this order? ");
+		int n = sc.nextInt();
+
+		for (int i = 1; i <= n; i++) {
+			System.out.println("Enter #" + i + " item data:");
+			System.out.print("Product name: ");
+			sc.nextLine();
+            
+			String productName = sc.nextLine();
+			System.out.print("Product price: ");
+			double productPrice = sc.nextDouble();
+			
+			Product product = new Product(productName, productPrice);
+			
+			System.out.print("Quantity: ");
+			int quantity = sc.nextInt();
+			
+			OrderItem oderItem = new OrderItem(quantity, productPrice, product);
+			o1.addItem(oderItem);
+		}
+		System.out.println();
+		System.out.println("ORDER SUMMARY:");
+		System.out.println(o1);
+		
+		sc.close();
+    }
+    
+}
+
+```
+#### Client:
+
+```java
+package produtos.secundarios;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Client {
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+	private String name;
+	private String email;
+	private Date birthDate;
+
+	public Client(String name, String email, Date birthDate) {
+		this.name = name;
+		this.email = email;
+		this.birthDate = birthDate;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	@Override
+	public String toString() {
+		return name + " (" + sdf.format(birthDate) + ") - " + email;
+		//return "Client [name=" + name + ", email=" + email + ", birthDate=" + birthDate + "]";
+	}
+	
+	
+	
+}
+```
+#### Order:
+
+```java
+package produtos.secundarios;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import produtos.secundarios.enums.OrderStatus;
+
+
+public class Order {
+
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+	private Date moment;
+	private OrderStatus status;
+
+	private Client client;
+	private List<OrderItem> items = new ArrayList<>();
+
+	public Order(Date moment, OrderStatus status, Client client) {
+		this.moment = moment;
+		this.status = status;
+		this.client = client;
+	}
+
+	public Date getMoment() {
+		return moment;
+	}
+
+	public void setMoment(Date moment) {
+		this.moment = moment;
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public List<OrderItem> getItems() {
+		return items;
+	}
+
+	public void addItem(OrderItem item) {
+		items.add(item);
+	}
+
+	public void removeItem(OrderItem item) {
+		items.remove(item);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Order moment: ");
+		sb.append(sdf.format(moment) + "\n");
+		sb.append("Order status: ");
+		sb.append(status + "\n");
+		sb.append("Client: ");
+		sb.append(client + "\n");
+		sb.append("Order items:\n");
+		for (OrderItem item : items) {
+			sb.append(item + "\n");
+		}
+		sb.append("Total price: $");
+		sb.append(String.format("%.2f", total()));
+		return sb.toString();
+	}
+
+	// ------------------------- Methods -----------------------------
+	public double total() {
+		double sum = 0.0;
+		for (OrderItem item : items) {
+			sum += item.subTotal();
+		}
+		return sum;
+	}
+
+}
+```
+#### OrderItem:
+
+```java
+package produtos.secundarios;
+
+public class OrderItem {
+
+	private Integer quantity;
+	private Double price;
+	
+	private Product product;
+
+	public OrderItem(Integer quantity, Double price, Product product) {
+		this.quantity = quantity;
+		this.price = price;
+		this.product = product;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}	
+	
+	public double subTotal() {
+		return price * quantity;
+	}
+	
+	@Override
+	public String toString() {
+		return product.getName() 
+				+ ", $" 
+				+ String.format("%.2f", price) 
+				+ ", Quantity: " 
+				+ quantity + 
+				", Subtotal: $" 
+				+ String.format("%.2f", subTotal());
+	}
+	
+}
+```
+#### Product:
+
+```java
+package produtos.secundarios;
+
+public class Product {
+
+	private String name;
+	private Double price;
+	
+	public Product(String name, Double price) {
+		this.name = name;
+		this.price = price;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	
+	
+}
+```
+#### OrderStatus:
+
+```java
+package produtos.secundarios.enums;
+
+public enum OrderStatus {
+	SHIPPED, PROCESSING, PENDING_PAYMENT, DELIVERED;
+}
+```
 
 
 
