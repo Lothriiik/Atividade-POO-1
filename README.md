@@ -3,8 +3,7 @@
 ![JAVA](https://custom-icon-badges.herokuapp.com/badge/Java-C63842?style=for-the-badge&logo=icons8-javaf&logoColor=black)
 ![GITHUB](https://img.shields.io/badge/Programação_Orientada_a_Objetos-black?style=for-the-badge&logo=GitHub&logoColor=white)
 
-Aluno: Uanderson Henrique Batista da Silva
-Matricula: 21110435
+Aluno: Uanderson Henrique Batista da Silva  /   Matricula: 21110435
 
 ### **Exercicio 1:**
 Faça um programa para ler a cotação do dólar, e depois leia o valor em dólares a ser comprado. A saída será quantos reais a pessoa pagará pelos dólares, considerando ainda que a pessoa pagará 6% de IOF sobre o valor em dólar. Criar uma classe CurrencyConverter (Conversor de moeda) para ser responsável pelos cálculos.
